@@ -46,7 +46,12 @@ variable "admin_username" {
     type = string
 }
 
-variable "market_ssh_key" {
-    type = string
+variable "UbuntuServer" {
+    type = object({
+        publisher   = string
+        offer       = string
+        sku         = string
+        version     = string
+  })
 }
 

@@ -1,6 +1,6 @@
-**API Management & Azure Open AI Terraform**
+**AI Service Platform by Terraform**
 ===========================
-<span style="font-size: 12px">ver 2025.07.24</span>
+<span style="font-size: 12px">ver 2025.11.03</span>
 <br>
 
 
@@ -9,9 +9,7 @@
 ### 변경 현황
 |날짜|변경 내용|
 |------|---|
-|2025.07.15|1. terraform.tfvars 추가<br>2. Azure OpenAI 리소스 2개로 증가 (추가 확장 가능)<br>3. 관리ID 추가<br>4. APIM Policy를 Smart LB 방식으로 변경<br>6. api 방식을 OpenAPI 로 변경<br>7. APIM Backend 추가<br>8. APIM의 Public Network Access 및 VNET Integration 패치 추가|
-|2025.07.24|1. AOAI 배포 시 신뢰하는 리소스 허용 옵션 해제 설정<br>2. APIM Subscription Key 자동 활성화<br>3. Application Insights 리소스 추가 및 APIM Logger로 연동<br>4. API Policy 수정|
-|2025.08.05|1. APIM API 진단 설정 시 Custom Metric 설정 자동 활성화<br>2. AOAI Switch 관련 Named Value 및 Policy 내용 추가|
+|2025.11.03|RG, VNET, VM, AOAI, APIM 추가|
 
 <br>
 

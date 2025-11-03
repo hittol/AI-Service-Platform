@@ -26,14 +26,21 @@ resource "azurerm_linux_virtual_machine" "JumpVM" {
     name                    = var.vm_name
     location                = var.location
     resource_group_name     = var.rg_name
-    network_interface_ids   = [azurerm_network_interface.nic_MarketVM.id]
+    network_interface_ids   = [azurerm_network_interface.nic_JumpVM.id]
     size                    = var.VM_Size
     admin_username          = var.admin_username 
 
     os_disk {
         name                    = "${var.vm_name}_osdisk"
-        caching                 = "ReadWrite"
+        caching                 = var.vm_caching
         storage_account_type    = var.storage_account_type
+    }
+
+    source_image_reference {
+        publisher = var.UbuntuServer.publisher
+        offer     = var.UbuntuServer.offer
+        sku       = var.UbuntuServer.sku
+        version   = var.UbuntuServer.version
     }
 
     identity {

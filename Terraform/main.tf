@@ -53,24 +53,24 @@ module "vm" {
     VM_Size                         = var.VM_Size
     vm_caching                      = var.vm_caching
     admin_username                  = var.admin_username
-    market_ssh_key                  = data.azurerm_ssh_public_key.market_ssh_key.public_key
+    UbuntuServer                    = var.UbuntuServer
     depends_on                      = [module.vnet]  
 }
 
 module "aoai" {
     source                          = "./Modules/aoai"
-    rg_name                         = var.resource_group_name
+    rg_name                         = module.rg.rg["AOAIRG"].name
     location                        = var.location
-    spoke_vnet_id                   = module.vnet.spoke_vnet_id
-    aoai_subnet_id                  = module.vnet.spoke_subnet_ids["PESubnet"]
+    aoai_vnet_id                    = module.vnet.aoai-vnet_id
+    aoai_subnet_id                  = module.vnet.aoai_subnet_ids["PESubnet"]
     aoai_instance                   = var.aoai_instance
     depends_on                      = [module.vnet]
 }
 
 module "apim" {
     source = "./modules/apim"
-    rg_name                         = var.resource_group_name
-    rg_id                           = module.rg.rg_id
+    rg_name                         = module.rg.rg["AOAIRG"].name
+    rg_id                           = module.rg.rg["AOAIRG"].id
     location                        = var.location
     identity_name                   = var.identity_name
     apim_name                       = var.apim_name
@@ -83,8 +83,8 @@ module "apim" {
     openapi_name                    = var.openapi_name
     openapi_protocols               = var.openapi_protocols
     firewall_trigger                = module.firewall.firewall_id
-    apim_pe_subnet_id               = module.vnet.spoke_subnet_ids["PESubnet"]
-    apim_integration_subnet_id      = module.vnet.spoke_subnet_ids["APIMINTGSubnet"]
+    apim_pe_subnet_id               = module.vnet.aoai_subnet_ids["PESubnet"]
+    apim_integration_subnet_id      = module.vnet.aoai_subnet_ids["APIMINTGSubnet"]
     hub_vnet_id                     = module.vnet.hub_vnet_id
     openapi_header                  = var.openapi_header 
     openapi_path                    = var.openapi_path

@@ -145,20 +145,20 @@ UbuntuServer =   {
 
 aoai_instance = {
   "aoai_01" = {
-    account_name          = "WRKIM-TEST-AOAI-0"
-    custom_subdomain_name = "WRKIM-TEST-AOAI-0"
+    account_name          = "AIPlat-AOAI-001"
+    custom_subdomain_name = "AIPlat-AOAI-001"
     sku_name              = "S0"
     deployment_name       = "gpt-4o-mini"
     model_name            = "gpt-4o-mini"
     model_version         = "2024-07-18"
     sku = {
       name     = "GlobalStandard"
-      capacity = 1 
+      capacity = 10 
     }
   },
   "aoai_02" = {
-    account_name          = "WRKIM-TEST-AOAI-1"
-    custom_subdomain_name = "WRKIM-TEST-AOAI-1"
+    account_name          = "AIPlat-AOAI-002"
+    custom_subdomain_name = "AIPlat-AOAI-002"
     sku_name              = "S0"
     deployment_name       = "gpt-4o-mini"
     model_name            = "gpt-4o-mini"
@@ -169,6 +169,24 @@ aoai_instance = {
     }
   }  
 }
+
+# ===================================================================
+# APIM Variables
+# ===================================================================
+
+identity_name     = "AIPlat-identity-ID"
+
+apim_name         = "AIPlat-AOAI-APIM"
+apim_sku          = "StandardV2"
+apimpublicaccess  = "Disabled"
+publisher_name    = "google.com"
+publisher_email   = "hittol17@gmail.com"
+
+entra_auth        = false
+openapi_path      = "openai"
+openapi_header    = "api-key"
+openapi_name      = "gpt-4o-Gateway"
+openapi_protocols = ["https"]
 
 
 # ===================================================================
@@ -207,20 +225,3 @@ dnat_destination_ports  = ["3400"]
 dnat_translated_port    = "3389"
 
 
-# ===================================================================
-# APIM Variables
-# ===================================================================
-
-identity_name     = "TEST-NH-identity-ID"
-
-apim_name         = "WRKIM-TEST-APIM"
-apim_sku          = "StandardV2"
-apimpublicaccess  = "Disabled"
-publisher_name    = "tdgl"
-publisher_email   = "wrkim@tdgl.co.kr"
-
-entra_auth        = false
-openapi_path      = "openai"
-openapi_header    = "api-key"
-openapi_name      = "gpt-4o-Gateway"
-openapi_protocols = ["https"]
