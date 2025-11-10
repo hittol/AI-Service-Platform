@@ -1,3 +1,7 @@
+output "hub_vnet_name" {
+  value       = azurerm_virtual_network.hub.name
+}
+
 output "hub_vnet_id" {
   value       = azurerm_virtual_network.hub.id
 }
@@ -10,6 +14,10 @@ output "hub_subnet_ids" {
 
 output "hub_subnet_cidrs" {
   value       = { for k, s in azurerm_subnet.hub : k => s.address_prefixes[0] }
+}
+
+output "aisvc_vnet_name" {
+  value       = azurerm_virtual_network.aisvc.name
 }
 
 output "aisvc_vnet_id" {
@@ -26,6 +34,10 @@ output "aisvc_subnet_cidrs" {
   value       = { for k, s in azurerm_subnet.aisvc : k => s.address_prefixes[0] }
 }
 
+output "aoai_vnet_name" {
+  value       = azurerm_virtual_network.aoai.name
+}
+
 output "aoai_vnet_id" {
   value       = azurerm_virtual_network.aoai.id
 }
@@ -38,6 +50,10 @@ output "aoai_subnet_ids" {
 
 output "aoai_subnet_cidrs" {
   value       = { for k, s in azurerm_subnet.aoai : k => s.address_prefixes[0] }
+}
+
+output "datastr_vnet_name" {
+  value       = azurerm_virtual_network.datastr.name
 }
 
 output "datastr_vnet_id" {

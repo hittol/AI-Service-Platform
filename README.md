@@ -1,15 +1,24 @@
 **AI Service Platform by Terraform**
 ===========================
-<span style="font-size: 12px">ver 2025.11.03</span>
+<span style="font-size: 12px">ver 2025.11.10</span>
 <br>
 
 
 ***
 
+### 아키텍처
+![architecture](./archi.jpg)
+
+
+<br>
+<br>
+
 ### 변경 현황
 |날짜|변경 내용|
 |------|---|
-|2025.11.03|RG, VNET, VM, AOAI, APIM 추가|
+|2025.11.03| RG, VNET, VM, AOAI, APIM 추가 |
+|2025.11.04| VPNGW,FW 추가 |
+|2025.11.10| App Service , AKS, AppGW&WAF 추가 |
 
 <br>
 
@@ -34,7 +43,7 @@
 ***
 
 ### 사용방법
-* <span style="font-size: 15px">terraform apply 시 Enter a value: 에 배포될 VM 의 Password 입력 .</span>
+* <span style="font-size: 15px">terraform apply 시 Enter a value: 에 배포할 구독의 Tenant ID 입력 .</span>
 <br>
 
 ***

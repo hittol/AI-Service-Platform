@@ -31,7 +31,7 @@ rg_setting = {
 hub_vnet_name               = "hub-vnet"
 hub_vnet_address_space      = ["10.0.0.0/23"]
 hub_subnets = {
-    "Jump_Subnet" = {
+    "JumpSubnet" = {
       address_prefixes                = ["10.0.0.0/27"]
       nsg_key                         = "hub-nsg"
     },
@@ -44,7 +44,7 @@ hub_subnets = {
     "AzureFirewallManagementSubnet"   = {
       address_prefixes                = ["10.0.0.128/26"]
     },
-    "AzureApplicationGatewaySubnet"   = {
+    "ApplicationGatewaySubnet"        = {
       address_prefixes                = ["10.0.1.0/24"]
     },
 }
@@ -145,8 +145,8 @@ UbuntuServer =   {
 
 aoai_instance = {
   "aoai_01" = {
-    account_name          = "AIPlat-AOAI-001"
-    custom_subdomain_name = "AIPlat-AOAI-001"
+    account_name          = "AIPlat-AOAI-01"
+    custom_subdomain_name = "AIPlat-AOAI-01"
     sku_name              = "S0"
     deployment_name       = "gpt-4o-mini"
     model_name            = "gpt-4o-mini"
@@ -157,8 +157,8 @@ aoai_instance = {
     }
   },
   "aoai_02" = {
-    account_name          = "AIPlat-AOAI-002"
-    custom_subdomain_name = "AIPlat-AOAI-002"
+    account_name          = "AIPlat-AOAI-02"
+    custom_subdomain_name = "AIPlat-AOAI-02"
     sku_name              = "S0"
     deployment_name       = "gpt-4o-mini"
     model_name            = "gpt-4o-mini"
@@ -193,14 +193,14 @@ openapi_protocols = ["https"]
 # VPN Gateawy Variables
 # ===================================================================
 
-vpngateway_name              = "vpngateway_name"
+vpngateway_name              = "AIPlat-VPN-GW"
 vpn_sku                      = "Basic"
 active_active_enabled        = false
 bgp_enabled                  = false
 public_ip_allocation_method  = "Static"
 private_ip_allocation_method = "Dynamic"
 
-localgateway_name            = "local_gateway_name"       
+localgateway_name            = "AIPlat-Local-GW"
 on_premise_public_ip         = "11.11.11.11"
 on_premise_address_space     = ["10.1.0.0/16"]
 
@@ -212,16 +212,38 @@ vpn_shared_key               = "ps_key_name"
 # FW Variables
 # ===================================================================
 
-fw_name = "TEST-NH-Firewall"
+fw_name = "AIPlat-Firewall"
 fw_sku  = "Standard"
 
-routetable_name         = "JumpSubnet-rt"
-routetable_name_spoke   = "SpokeSubnet-rt"
+routetable_name_JUMP    = "RT-JumpSubnet"
+routetable_name_AOAI    = "RT-AOAISubent"
+routetable_name_AISVC   = "RT-AISVCSubent"
 
-dnat_rule_name          = "AllowRDP_JumpVM"
-dnat_protocols          = ["TCP"]
-dnat_source_addresses   = ["58.151.57.2"]
-dnat_destination_ports  = ["3400"]
-dnat_translated_port    = "3389"
+# ===================================================================
+# App Services Variables
+# ===================================================================
 
+app_plan_name       = "AIPlat-plan-appservice"
+plan_os             = "Linux"
+plan_sku            = "B1"
 
+app_name            = "AIPlat-appservice"
+
+# ===================================================================
+# AKS
+# ===================================================================
+
+AKS_identity_name     = "AIPlat-aks-managedID"
+aks_name              = "AIPlat-AKS"
+aks_tier              = "Standard"
+nodepoolsize          = "Standard_B2s"
+
+nodepool_01_name      = "standardpool"
+nodepool_01_size      = "Standard_B2s"
+
+# ===================================================================
+# AppGW&WAF
+# ===================================================================
+
+appgw_name            = "AIPlat-AppGW"
+waf_name              = "AIPlat-WAF"

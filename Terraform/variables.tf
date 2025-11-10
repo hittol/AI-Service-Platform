@@ -42,6 +42,7 @@ variable "aisvc_vnet_address_space" {
 variable "aisvc_subnets" {
   type = map(object({
     address_prefixes                          = list(string)
+    nsg_key                                   = optional(string)
     service_delegation_name                   = optional(string)
     default_outbound_access_enabled           = optional(bool, false)
   }))
@@ -58,6 +59,7 @@ variable "aoai_vnet_address_space" {
 variable "aoai_subnets" {
   type = map(object({
     address_prefixes                          = list(string)
+    nsg_key                                   = optional(string)
     service_delegation_name                   = optional(string)
     default_outbound_access_enabled           = optional(bool, false)
   }))
@@ -74,6 +76,7 @@ variable "datastr_vnet_address_space" {
 variable "datastr_subnets" {
   type = map(object({
     address_prefixes                          = list(string)
+    nsg_key                                   = optional(string)
     service_delegation_name                   = optional(string)
     default_outbound_access_enabled           = optional(bool, false)
   }))
@@ -253,46 +256,6 @@ variable "private_ip_allocation_method" {
   type = string
 }
 
-# ===================================================================
-# FW
-# ===================================================================
-
-variable fw_sku {
-  type = string
-}
-
-variable "fw_name" {
-  type = string
-}
-
-variable "routetable_name" {
-  type = string
-}
-
-variable "routetable_name_spoke" {
-  type = string
-}
-
-variable "dnat_rule_name" {
-  type = string
-}
-
-variable "dnat_protocols" {
-  type = list(string)
-}
-
-variable "dnat_source_addresses" {
-  type = list(string)
-}
-
-variable "dnat_destination_ports" {
-  type = list(string)
-}
-
-variable "dnat_translated_port" {
-  type = string
-}
-
 
 # ===================================================================
 # APIM
@@ -339,4 +302,93 @@ variable "openapi_header" {
 }
 variable "openapi_path" {
   type = string
+}
+
+# ===================================================================
+# FW
+# ===================================================================
+
+variable fw_sku {
+  type = string
+}
+
+variable "fw_name" {
+  type = string
+}
+
+variable "routetable_name_JUMP" {
+  type = string
+}
+
+variable "routetable_name_AOAI" {
+  type = string
+}
+
+variable "routetable_name_AISVC" {
+  type = string
+}
+
+# ===================================================================
+# AppService
+# ===================================================================
+
+variable "app_plan_name" {
+  type = string
+}
+
+variable "plan_os" {
+  type = string  
+}
+
+variable "plan_sku" {
+  type = string  
+}
+
+variable "app_name" {
+  type = string
+}
+
+# ===================================================================
+# AKS
+# ===================================================================
+
+variable "aks_name" {
+    type        = string
+}
+
+variable "aks_tier" {
+    type        = string
+}
+
+variable "nodepoolsize" {
+    type        = string
+}
+
+variable "AKS_identity_name" {
+  type = string   
+}
+
+variable "nodepool_01_name" {
+  type = string   
+}
+
+variable "nodepool_01_size" {
+  type = string   
+}
+
+variable "tenant_id" {
+  type      = string
+  sensitive = true
+}
+
+# ===================================================================
+# AppGW&WAF
+# ===================================================================
+
+variable "appgw_name" {
+  type        = string
+}
+
+variable "waf_name" {
+  type        = string
 }

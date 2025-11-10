@@ -27,16 +27,13 @@ module "vnet" {
     datastr_subnets                 = var.datastr_subnets
     network_security_groups_rule    = var.nsg_rule
     apim_intg_nsg_name              = var.apim_intg_nsg_name
-    hub_to_aisvc_name               = var.hub_to_aisvc_name
-    aisvce-to-hub_name              = var.aisvce-to-hub_name
     aoai_to_aisvc_name              = var.aoai_to_aisvc_name
     aisvce-to-aoai_name             = var.aisvce-to-aoai_name
     aoai_to_datastr_name            = var.aoai_to_datastr_name
     datastr-to-aoai_name            = var.datastr-to-aoai_name
     datastr_to_aisvc_name           = var.datastr_to_aisvc_name
     aisvce-to-datastr_name          = var.aisvce-to-datastr_name
-    datastr_to_hub_name             = var.datastr_to_hub_name
-    hub-to-datastr_name             = var.hub-to-datastr_name
+
     depends_on                      = [module.rg]      
 }
 
@@ -47,7 +44,7 @@ module "vm" {
     rg_name                         = module.rg.rg["HUBRG"].name
     storage_account_type            = var.storage_account_type
     ip_config_name                  = var.ip_config_name
-    vnet-subnet_id                  = module.vnet.hub_subnet_ids["Jump_Subnet"]
+    vnet-subnet_id                  = module.vnet.hub_subnet_ids["JumpSubnet"]
     ip_address_allocation           = var.ip_address_allocation
     private_ip_address              = var.private_ip_address
     VM_Size                         = var.VM_Size
@@ -57,11 +54,42 @@ module "vm" {
     depends_on                      = [module.vnet]  
 }
 
+module "appservice" {
+    source = "./modules/appservice"
+    rg_hub_name                     = module.rg.rg["HUBRG"].name
+    hub_vnet_id                     = module.vnet.hub_vnet_id
+    app_rg_name                     = module.rg.rg["AISVCRG"].name
+    app_inte_subnet                 = module.vnet.aisvc_subnet_ids["AppINTEGSubnet"]
+    app_pe_subnet                   = module.vnet.aisvc_subnet_ids["PESubnet"]
+    location                        = var.location
+    app_plan_name                   = var.app_plan_name
+    plan_os                         = var.plan_os
+    plan_sku                        = var.plan_sku
+    app_name                        = var.app_name
+    depends_on                      = [module.vm]
+}
+
+module "aks" {
+    source                          = "./Modules/aks"
+    rg_name                         = module.rg.rg["AISVCRG"].name
+    location                        = var.location
+    AKS_identity_name               = var.AKS_identity_name 
+    aks_name                        = var.aks_name
+    aks_tier                        = var.aks_tier
+    nodepoolsize                    = var.nodepoolsize
+    nodepool_01_name                = var.nodepool_01_name
+    nodepool_01_size                = var.nodepool_01_size
+    VNET_id                         = module.vnet.aisvc_vnet_id
+    AKS-subnet_id                   = module.vnet.aisvc_subnet_ids["AKSINTEGSubnet"]
+    tenant_id                       = var.tenant_id
+    depends_on                      = [module.appservice]
+}
+
 module "aoai" {
     source                          = "./Modules/aoai"
     rg_name                         = module.rg.rg["AOAIRG"].name
     location                        = var.location
-    aoai_vnet_id                    = module.vnet.aoai-vnet_id
+    aoai_vnet_id                    = module.vnet.aoai_vnet_id
     aoai_subnet_id                  = module.vnet.aoai_subnet_ids["PESubnet"]
     aoai_instance                   = var.aoai_instance
     depends_on                      = [module.vnet]
@@ -93,7 +121,7 @@ module "apim" {
 
 module "vpngateway" {
     source                          = "./modules/vpngateway"
-    rg_name                         = var.resource_group_name
+    rg_name                         = module.rg.rg["HUBRG"].name
     location                        = var.location
     vpngateway_name                 = var.vpngateway_name
     active_active_enabled           = var.active_active_enabled
@@ -108,28 +136,56 @@ module "vpngateway" {
     vpn_sku                         = var.vpn_sku
     hub_vnet_id                     = module.vnet.hub_vnet_id
     hub_subnet_id                   = module.vnet.hub_subnet_ids["GatewaySubnet"]
-    depends_on                      = [module.rg]
+    depends_on                      = [module.vnet]
 }
 
 module "firewall" {
     source                          = "./modules/fw"
-    rg_name                         = var.resource_group_name
+    rg_name                         = module.rg.rg["HUBRG"].name
     location                        = var.location
     fw_name                         = var.fw_name
     fw_sku                          = var.fw_sku
-    routetable_name                 = var.routetable_name
-    routetable_name_spoke           = var.routetable_name_spoke
+    routetable_name_JUMP            = var.routetable_name_JUMP
+    routetable_name_AOAI            = var.routetable_name_AOAI
+    routetable_name_AISVC           = var.routetable_name_AISVC
     hub_vnet_id                     = module.vnet.hub_vnet_id
     hub_fw_subnet_id                = module.vnet.hub_subnet_ids["AzureFirewallSubnet"]
-    hub_jump_subnet_id              = module.vnet.hub_subnet_ids["JumpSubnet"]
-    spoke_subnet_id                 = module.vnet.spoke_subnet_ids["SpokeSubnet"]
+    hub_manfw_subnet_id             = module.vnet.hub_subnet_ids["AzureFirewallManagementSubnet"]
+    jump_subnet_id                  = module.vnet.hub_subnet_ids["JumpSubnet"]
+    apim_subnet_id                  = module.vnet.aoai_subnet_ids["APIMINTGSubnet"]
+    app_subnet_id                   = module.vnet.aisvc_subnet_ids["AppINTEGSubnet"]
+    aks_subnet_id                   = module.vnet.aisvc_subnet_ids["AKSINTEGSubnet"]
     jumpvm_ip                       = module.vm.private_ip_address
     app_rule_collection_groups      = local.firewall_application_rules
     network_rule_collection_groups  = local.firewall_network_rules
-    dnat_rule_name                  = var.dnat_rule_name
-    dnat_protocols                  = var.dnat_protocols
-    dnat_source_addresses           = var.dnat_source_addresses
-    dnat_destination_ports          = var.dnat_destination_ports
-    dnat_translated_port            = var.dnat_translated_port    
-    depends_on                      = [module.vm] 
+    depends_on                      = [module.vpngateway]
+}
+
+module "peering" {
+    source                          = "./Modules/peering"
+    Hub_rg_name                     = module.rg.rg["HUBRG"].name
+    hub_vnet_id                     = module.vnet.hub_vnet_id
+    hub_vnet_name                   = module.vnet.hub_vnet_name
+    AISVC_rg_name                   = module.rg.rg["AISVCRG"].name
+    AISVC_vnet_id                   = module.vnet.aisvc_vnet_id
+    AISVC_vnet_name                 = module.vnet.aisvc_vnet_name
+    DataSTR_rg_name                 = module.rg.rg["DataSTRRG"].name
+    DataSTR_vnet_id                 = module.vnet.datastr_vnet_id
+    DataSTR_vnet_name               = module.vnet.datastr_vnet_name
+    hub_to_aisvc_name               = var.hub_to_aisvc_name
+    aisvce-to-hub_name              = var.aisvce-to-hub_name
+    datastr_to_hub_name             = var.datastr_to_hub_name
+    hub-to-datastr_name             = var.hub-to-datastr_name
+    depends_on                      = [module.firewall]
+}
+
+module "appgw" {
+    source                          = "./Modules/appgw"
+    rg_name                         = module.rg.rg["HUBRG"].name
+    location                        = var.location
+    appgw_name                      = var.appgw_name
+    waf_name                        = var.waf_name
+    appgw-subnet_id                 = module.vnet.hub_subnet_ids["ApplicationGatewaySubnet"]
+    app_pe_ipaddress                = module.appservice.private_ip_address
+    depends_on                      = [module.peering]
 }

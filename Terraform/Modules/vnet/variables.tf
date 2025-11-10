@@ -33,6 +33,7 @@ variable "hub_vnet_address_space" {
 variable "hub_subnets" {
   type = map(object({
     address_prefixes = list(string)
+    nsg_key          = optional(string)
   }))
 }
 
@@ -47,6 +48,7 @@ variable "aisvc_vnet_address_space" {
 variable "aisvc_subnets" {
   type = map(object({
     address_prefixes                          = list(string)
+    nsg_key                                   = optional(string)
     service_delegation_name                   = optional(string)
     default_outbound_access_enabled           = optional(bool, false)
   }))
@@ -63,6 +65,7 @@ variable "aoai_vnet_address_space" {
 variable "aoai_subnets" {
   type = map(object({
     address_prefixes                          = list(string)
+    nsg_key                                   = optional(string)
     service_delegation_name                   = optional(string)
     default_outbound_access_enabled           = optional(bool, false)
   }))
@@ -79,6 +82,7 @@ variable "datastr_vnet_address_space" {
 variable "datastr_subnets" {
   type = map(object({
     address_prefixes                          = list(string)
+    nsg_key                                   = optional(string)
     service_delegation_name                   = optional(string)
     default_outbound_access_enabled           = optional(bool, false)
   }))
@@ -113,14 +117,6 @@ variable "network_security_groups_rule" {
 # Peering
 # ===================================================================
 
-variable "hub_to_aisvc_name" {
-  type        = string 
-}
-
-variable "aisvce-to-hub_name" {
-  type        = string 
-}
-
 variable "aoai_to_aisvc_name" {
   type        = string 
 }
@@ -145,10 +141,3 @@ variable "aisvce-to-datastr_name" {
   type        = string 
 }
 
-variable "datastr_to_hub_name" {
-  type        = string 
-}
-
-variable "hub-to-datastr_name" {
-  type        = string 
-}

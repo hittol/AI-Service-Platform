@@ -144,30 +144,6 @@ resource "azurerm_subnet_network_security_group_association" "apim_intg_nsg_asso
 # VNET Peering
 # ===================================================================
 
-resource "azurerm_virtual_network_peering" "hub_to_aisvc" {
-  name                         = var.hub_to_aisvc_name
-  resource_group_name          = var.Hub_rg_name
-  virtual_network_name         = azurerm_virtual_network.hub.name
-  remote_virtual_network_id    = azurerm_virtual_network.aisvc.id
-
-  allow_forwarded_traffic      = true
-  allow_virtual_network_access = true
-  allow_gateway_transit        = true
-  depends_on                   = [azurerm_subnet.aisvc]
-}
-
-resource "azurerm_virtual_network_peering" "aisvc_to_hub" {
-  name                         = var.aisvce-to-hub_name
-  resource_group_name          = var.AISVC_rg_name
-  virtual_network_name         = azurerm_virtual_network.aisvc.name
-  remote_virtual_network_id    = azurerm_virtual_network.hub.id
-
-  allow_forwarded_traffic      = true
-  allow_virtual_network_access = true
-  use_remote_gateways          = true
-  depends_on                   = [azurerm_subnet.aisvc]
-}
-
 resource "azurerm_virtual_network_peering" "aoai_to_aisvc" {
   name                         = var.aoai_to_aisvc_name
   resource_group_name          = var.AOAI_rg_name
@@ -175,8 +151,6 @@ resource "azurerm_virtual_network_peering" "aoai_to_aisvc" {
   remote_virtual_network_id    = azurerm_virtual_network.aisvc.id
 
   allow_forwarded_traffic      = true
-  allow_virtual_network_access = true
-  allow_gateway_transit        = true
   depends_on                   = [azurerm_subnet.aisvc]
 }
 
@@ -187,8 +161,6 @@ resource "azurerm_virtual_network_peering" "aisvc_to_aoai" {
   remote_virtual_network_id    = azurerm_virtual_network.aoai.id
 
   allow_forwarded_traffic      = true
-  allow_virtual_network_access = true
-  use_remote_gateways          = true
   depends_on                   = [azurerm_subnet.aisvc]
 }
 
@@ -199,8 +171,6 @@ resource "azurerm_virtual_network_peering" "aoai_to_datastr" {
   remote_virtual_network_id    = azurerm_virtual_network.datastr.id
 
   allow_forwarded_traffic      = true
-  allow_virtual_network_access = true
-  allow_gateway_transit        = true
   depends_on                   = [azurerm_subnet.aoai]
 }
 
@@ -211,8 +181,6 @@ resource "azurerm_virtual_network_peering" "datastr_to_aoai" {
   remote_virtual_network_id    = azurerm_virtual_network.aoai.id
 
   allow_forwarded_traffic      = true
-  allow_virtual_network_access = true
-  use_remote_gateways          = true
   depends_on                   = [azurerm_subnet.aoai]
 }
      
@@ -223,8 +191,6 @@ resource "azurerm_virtual_network_peering" "aisvc_to_datastr" {
   remote_virtual_network_id    = azurerm_virtual_network.datastr.id
 
   allow_forwarded_traffic      = true
-  allow_virtual_network_access = true
-  allow_gateway_transit        = true
   depends_on                   = [azurerm_subnet.aisvc]
 }
 
@@ -235,32 +201,8 @@ resource "azurerm_virtual_network_peering" "datastr_to_aisvc" {
   remote_virtual_network_id    = azurerm_virtual_network.aisvc.id
 
   allow_forwarded_traffic      = true
-  allow_virtual_network_access = true
-  use_remote_gateways          = true
   depends_on                   = [azurerm_subnet.aisvc]
 }     
 
-resource "azurerm_virtual_network_peering" "hub_to_datastr" {
-  name                         = var.hub-to-datastr_name
-  resource_group_name          = var.Hub_rg_name
-  virtual_network_name         = azurerm_virtual_network.hub.name
-  remote_virtual_network_id    = azurerm_virtual_network.datastr.id
 
-  allow_forwarded_traffic      = true
-  allow_virtual_network_access = true
-  allow_gateway_transit        = true
-  depends_on                   = [azurerm_subnet.hub]
-}
-
-resource "azurerm_virtual_network_peering" "datastr_to_aisvc" {
-  name                         = var.datastr_to_hub_name
-  resource_group_name          = var.DataSTR_rg_name
-  virtual_network_name         = azurerm_virtual_network.datastr.name
-  remote_virtual_network_id    = azurerm_virtual_network.hub.id
-
-  allow_forwarded_traffic      = true
-  allow_virtual_network_access = true
-  use_remote_gateways          = true
-  depends_on                   = [azurerm_subnet.hub]
-}
     
