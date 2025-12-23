@@ -52,11 +52,11 @@ hub_subnets = {
 aisvc_vnet_name                         = "aisvc-vnet"
 aisvc_vnet_address_space                = ["192.168.0.0/22"]
 aisvc_subnets = {
-    "AppINTEGSubnet" = {
+    "FrontINTEGSubnet" = {
       address_prefixes                  = ["192.168.0.0/24"]
       default_outbound_access_enabled   = false
     },    
-    "AKSINTEGSubnet" = {
+    "BackINTEGSubnet" = {
       address_prefixes                  = ["192.168.1.0/24"]
       default_outbound_access_enabled   = false
     },
@@ -223,23 +223,14 @@ routetable_name_AISVC   = "RT-AISVCSubent"
 # App Services Variables
 # ===================================================================
 
+acr_name            = "acr-AIPlat"
+
 app_plan_name       = "AIPlat-plan-appservice"
 plan_os             = "Linux"
 plan_sku            = "B1"
 
-app_name            = "AIPlat-appservice"
-
-# ===================================================================
-# AKS
-# ===================================================================
-
-AKS_identity_name     = "AIPlat-aks-managedID"
-aks_name              = "AIPlat-AKS"
-aks_tier              = "Standard"
-nodepoolsize          = "Standard_B2s"
-
-nodepool_01_name      = "standardpool"
-nodepool_01_size      = "Standard_B2s"
+front_name          = "app-AIPlat-front"
+back_name           = "app-AIPlat-back"
 
 # ===================================================================
 # AppGW&WAF

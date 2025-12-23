@@ -33,7 +33,6 @@ module "vnet" {
     datastr-to-aoai_name            = var.datastr-to-aoai_name
     datastr_to_aisvc_name           = var.datastr_to_aisvc_name
     aisvce-to-datastr_name          = var.aisvce-to-datastr_name
-
     depends_on                      = [module.rg]      
 }
 
@@ -58,31 +57,20 @@ module "appservice" {
     source = "./modules/appservice"
     rg_hub_name                     = module.rg.rg["HUBRG"].name
     hub_vnet_id                     = module.vnet.hub_vnet_id
+    aisvc_vnet_id                   = module.vnet.aisvc_vnet_id
     app_rg_name                     = module.rg.rg["AISVCRG"].name
-    app_inte_subnet                 = module.vnet.aisvc_subnet_ids["AppINTEGSubnet"]
+    front_inte_subnet               = module.vnet.aisvc_subnet_ids["FrontINTEGSubnet"]
+    back_inte_subnet                = module.vnet.aisvc_subnet_ids["BackINTEGSubnet"]
     app_pe_subnet                   = module.vnet.aisvc_subnet_ids["PESubnet"]
     location                        = var.location
+    identity_name                   = var.acr_identity_name
+    acr_name                        = var.acr_name
     app_plan_name                   = var.app_plan_name
     plan_os                         = var.plan_os
     plan_sku                        = var.plan_sku
-    app_name                        = var.app_name
+    front_name                      = var.front_name
+    back_name                       = var.back_name
     depends_on                      = [module.vm]
-}
-
-module "aks" {
-    source                          = "./Modules/aks"
-    rg_name                         = module.rg.rg["AISVCRG"].name
-    location                        = var.location
-    AKS_identity_name               = var.AKS_identity_name 
-    aks_name                        = var.aks_name
-    aks_tier                        = var.aks_tier
-    nodepoolsize                    = var.nodepoolsize
-    nodepool_01_name                = var.nodepool_01_name
-    nodepool_01_size                = var.nodepool_01_size
-    VNET_id                         = module.vnet.aisvc_vnet_id
-    AKS-subnet_id                   = module.vnet.aisvc_subnet_ids["AKSINTEGSubnet"]
-    tenant_id                       = var.tenant_id
-    depends_on                      = [module.appservice]
 }
 
 module "aoai" {

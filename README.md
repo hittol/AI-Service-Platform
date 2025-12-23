@@ -1,6 +1,6 @@
 **AI Service Platform by Terraform**
 ===========================
-<span style="font-size: 12px">ver 2025.11.10</span>
+<span style="font-size: 12px">ver 2025.12.23</span>
 <br>
 
 
@@ -18,7 +18,8 @@
 |------|---|
 |2025.11.03| RG, VNET, VM, AOAI, APIM 추가 |
 |2025.11.04| VPNGW,FW 추가 |
-|2025.11.10| App Service , AKS, AppGW&WAF 추가 |
+|2025.11.10| App Service , AppGW&WAF 추가 |
+|2025.12.23| App Service , StorageAccount 추가, 설정 변경 |
 
 <br>
 
@@ -38,12 +39,6 @@
 * <span style="font-size: 15px"> az login --tenant [Tenant ID] 를 입력해 배포할 구독의 Tenant 에 로그인 합니다. </span>
 * <span style="font-size: 15px"> az account set --subscription [ subscription ID ] 를 입력해 배포할 구독의 ID 를 설정합니다. </span>
 * <span style="font-size: 15px"> \$env:ARM_TENANT_ID = "Tenant ID" , \$env:ARM_SUBSCRIPTION_ID = "Subscription ID" 를 입력해 Terraform이 읽을 환경 변수를 등록합니다.</span>
-<br>
-
-***
-
-### 사용방법
-* <span style="font-size: 15px">terraform apply 시 Enter a value: 에 배포할 구독의 Tenant ID 입력 .</span>
 <br>
 
 ***
