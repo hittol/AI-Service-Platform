@@ -87,39 +87,53 @@ resource "azurerm_service_plan" "service_plan_prd" {
 # ===================================================================
 
 resource "azurerm_linux_web_app" "front_app" {
-  name                  = var.front_name
-  resource_group_name   = var.app_rg_name
-  location              = var.location
-  service_plan_id       = azurerm_service_plan.service_plan_prd.id
-  depends_on            = [azurerm_service_plan.service_plan_prd]
-  https_only            = true
+  name                          = var.front_name
+  resource_group_name           = var.app_rg_name
+  location                      = var.location
+  service_plan_id               = azurerm_service_plan.service_plan_prd.id
+  https_only                    = true
   public_network_access_enabled = false
 
   identity {
-    type = "UserAssigned"
-    identity_ids = [azurerm_user_assigned_identity.ManagedID.id]
+    type          = "UserAssigned"
+    identity_ids  = [azurerm_user_assigned_identity.ManagedID.id]
   }
 
   site_config { 
+    vnet_route_all_enabled = true
+
+    application_stack {
+      docker_registry_url = var.docker_registry_url
+      docker_image_name   = "${var.docker_image_name}:${var.docker_image_tag}"   
+    }
   }
+
+  depends_on                    = [azurerm_service_plan.service_plan_prd]
 }
 
 resource "azurerm_linux_web_app" "back_app" {
-  name                  = var.back_name
-  resource_group_name   = var.app_rg_name
-  location              = var.location
-  service_plan_id       = azurerm_service_plan.service_plan_prd.id
-  depends_on            = [azurerm_service_plan.service_plan_prd]
-  https_only            = true
+  name                          = var.back_name
+  resource_group_name           = var.app_rg_name
+  location                      = var.location
+  service_plan_id               = azurerm_service_plan.service_plan_prd.id
+  https_only                    = true
   public_network_access_enabled = false
 
   identity {
-    type = "UserAssigned"
+    type         = "UserAssigned"
     identity_ids = [azurerm_user_assigned_identity.ManagedID.id]
   }
 
   site_config { 
+    vnet_route_all_enabled = true
+    
+    application_stack {
+      docker_registry_url = var.docker_registry_url
+      docker_image_name   = "${var.docker_image_name}:${var.docker_image_tag}"   
+    }
   }
+
+  depends_on                    = [azurerm_service_plan.service_plan_prd]
 }
 
 

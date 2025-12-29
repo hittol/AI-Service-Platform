@@ -62,3 +62,16 @@ variable "front_name" {
 variable "back_name" {
   type = string
 }
+
+variable "docker_registry_url" {
+  type = string
+}
+
+variable "docker_image_name" {
+  type = string
+}
+
+variable "docker_image_tag" {
+  type = string
+}
+    

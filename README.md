@@ -1,6 +1,6 @@
 **AI Service Platform by Terraform**
 ===========================
-<span style="font-size: 12px">ver 2025.12.23</span>
+<span style="font-size: 12px">ver 2025.12.30</span>
 <br>
 
 
@@ -19,7 +19,7 @@
 |2025.11.03| RG, VNET, VM, AOAI, APIM 추가 |
 |2025.11.04| VPNGW,FW 추가 |
 |2025.11.10| App Service , AppGW&WAF 추가 |
-|2025.12.23| App Service , StorageAccount 추가, 설정 변경 |
+|2025.12.30| App Service , StorageAccount 추가, 설정 변경 |
 
 <br>
 

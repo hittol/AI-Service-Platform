@@ -70,6 +70,9 @@ module "appservice" {
     plan_sku                        = var.plan_sku
     front_name                      = var.front_name
     back_name                       = var.back_name
+    docker_registry_url             = var.docker_registry_url
+    docker_image_name               = var.docker_image_name  
+    docker_image_tag                = var.docker_image_tag
     depends_on                      = [module.vm]
 }
 

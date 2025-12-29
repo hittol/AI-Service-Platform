@@ -232,6 +232,10 @@ plan_sku            = "B1"
 front_name          = "app-AIPlat-front"
 back_name           = "app-AIPlat-back"
 
+docker_registry_url = ""
+docker_image_name   = ""
+docker_image_tag    = ""
+
 # ===================================================================
 # AppGW&WAF
 # ===================================================================
